@@ -1,5 +1,5 @@
 import React from 'react';
-import { BrowserRouter, Route } from 'react-router-dom';
+import { BrowserRouter, Route, Link } from 'react-router-dom';
 import HomeScreen from './screens/HomeScreen';
 import ProductScreen from './screens/ProductScreen';
 
@@ -9,9 +9,9 @@ const App = () => {
 			<div className='grid-container'>
 				<header className='row'>
 					<div>
-						<a className='brand' href='/'>
+						<Link className='brand' to='/'>
 							amazona
-						</a>
+						</Link>
 					</div>
 					<div>
 						<a href='/cart'>Cart</a>
