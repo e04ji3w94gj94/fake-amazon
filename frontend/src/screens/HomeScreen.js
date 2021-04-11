@@ -1,33 +1,17 @@
 import React from 'react';
+import { connect } from 'react-redux';
 import Product from '../components/Product';
-import axios from 'axios';
 import LoadingBox from '../components/LoadingBox';
 import MessageBox from '../components/MessageBox';
+import { listProducts } from '../actions/productActions';
 
 class HomeScreen extends React.Component {
-	state = {
-		products: [],
-		loading: false,
-		error: false,
-	};
-
 	componentDidMount() {
-		const fecthData = async () => {
-			try {
-				this.setState({ loading: true });
-				const { data } = await axios.get('/api/products');
-				this.setState({ loading: false });
-				this.setState({ products: data });
-			} catch (err) {
-				this.setState({ error: err.message });
-				this.setState({ loading: false });
-			}
-		};
-		fecthData();
+		this.props.listProducts();
 	}
 
 	render() {
-		const { products, loading, error } = this.state;
+		const { products, loading, error } = this.props.productList;
 		return (
 			<div>
 				{loading ? (
@@ -45,4 +29,11 @@ class HomeScreen extends React.Component {
 		);
 	}
 }
-export default HomeScreen;
+
+const mapStateToProps = (state) => {
+	return {
+		productList: state.productList,
+	};
+};
+
+export default connect(mapStateToProps, { listProducts })(HomeScreen);
