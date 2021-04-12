@@ -5,12 +5,22 @@ import Rating from '../components/Rating';
 import LoadingBox from '../components/LoadingBox';
 import MessageBox from '../components/MessageBox';
 import { detailsProduct } from '../actions/productActions';
+import history from '../history';
 
 class ProductScreen extends React.Component {
+	productId = this.props.match.params.id;
+
+	state = {
+		qty: 1,
+	};
+
 	componentDidMount() {
-		const productId = this.props.match.params.id;
-		this.props.detailsProduct(productId);
+		this.props.detailsProduct(this.productId);
 	}
+
+	addToCartHandler = () => {
+		history.push(`/cart/${this.productId}?qty=${this.state.qty}`);
+	};
 
 	render() {
 		const { loading, error, product } = this.props.productDetails;
@@ -71,9 +81,39 @@ class ProductScreen extends React.Component {
 												</div>
 											</div>
 										</li>
-										<li>
-											<button className='primary block'>Add to Cart</button>
-										</li>
+										{product.countInStock > 0 && (
+											<>
+												<li>
+													<div className='row'>
+														<div>Qty</div>
+														<div>
+															<select
+																value={this.state.qty}
+																onChange={(e) =>
+																	this.setState({ qty: e.target.value })
+																}
+															>
+																{[...Array(product.countInStock).keys()].map(
+																	(x) => (
+																		<option key={x + 1} value={x + 1}>
+																			{x + 1}
+																		</option>
+																	)
+																)}
+															</select>
+														</div>
+													</div>
+												</li>
+												<li>
+													<button
+														onClick={this.addToCartHandler}
+														className='primary block'
+													>
+														Add to Cart
+													</button>
+												</li>
+											</>
+										)}
 									</ul>
 								</div>
 							</div>
