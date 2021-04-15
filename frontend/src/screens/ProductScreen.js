@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import Rating from '../components/Rating';
 import LoadingBox from '../components/LoadingBox';
 import MessageBox from '../components/MessageBox';
-import { detailsProduct } from '../actions/productActions';
+import { detailsProduct } from '../actions';
 import history from '../history';
 
 class ProductScreen extends React.Component {
@@ -24,7 +24,6 @@ class ProductScreen extends React.Component {
 
 	render() {
 		const { loading, error, product } = this.props.productDetails;
-		console.log(product);
 		return (
 			<div>
 				{loading ? (

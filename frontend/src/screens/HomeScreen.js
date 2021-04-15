@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import Product from '../components/Product';
 import LoadingBox from '../components/LoadingBox';
 import MessageBox from '../components/MessageBox';
-import { listProducts } from '../actions/productActions';
+import { listProducts } from '../actions';
 
 class HomeScreen extends React.Component {
 	componentDidMount() {

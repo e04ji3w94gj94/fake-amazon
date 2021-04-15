@@ -2,63 +2,28 @@ import React from 'react';
 
 const Rating = (props) => {
 	const { rating, numReviews } = props;
+	const ratingList = [1, 2, 3, 4, 5];
+	const renderrating = ratingList.map((rate) => {
+		return (
+			<React.Fragment key={rate}>
+				<span>
+					<i
+						className={
+							rating >= rate
+								? 'fa fa-star'
+								: rating >= rate - 0.5
+								? 'fa fa-star-half-o'
+								: 'fa fa-star-o'
+						}
+					></i>
+				</span>
+			</React.Fragment>
+		);
+	});
+
 	return (
 		<div className='rating'>
-			<span>
-				<i
-					className={
-						rating >= 1
-							? 'fa fa-star'
-							: rating >= 0.5
-							? 'fa fa-star-half-o'
-							: 'fa fa-star-o'
-					}
-				></i>
-			</span>
-			<span>
-				<i
-					className={
-						rating >= 2
-							? 'fa fa-star'
-							: rating >= 1.5
-							? 'fa fa-star-half-o'
-							: 'fa fa-star-o'
-					}
-				></i>
-			</span>
-			<span>
-				<i
-					className={
-						rating >= 3
-							? 'fa fa-star'
-							: rating >= 2.5
-							? 'fa fa-star-half-o'
-							: 'fa fa-star-o'
-					}
-				></i>
-			</span>
-			<span>
-				<i
-					className={
-						rating >= 4
-							? 'fa fa-star'
-							: rating >= 3.5
-							? 'fa fa-star-half-o'
-							: 'fa fa-star-o'
-					}
-				></i>
-			</span>
-			<span>
-				<i
-					className={
-						rating >= 5
-							? 'fa fa-star'
-							: rating >= 4.5
-							? 'fa fa-star-half-o'
-							: 'fa fa-star-o'
-					}
-				></i>
-			</span>
+			{renderrating}
 			<span>{numReviews + ' reviews'}</span>
 		</div>
 	);
