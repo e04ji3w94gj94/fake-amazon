@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import history from '../history';
-import { addToCart } from '../actions';
+import { addToCart, removeFromCart } from '../actions';
 import MessageBox from '../components/MessageBox';
 
 class CartScreen extends React.Component {
@@ -16,7 +16,7 @@ class CartScreen extends React.Component {
 		}
 	}
 	removeFromCartHandler = (id) => {
-		// delete action
+		this.props.removeFromCart(id);
 	};
 	checkoutHandler = () => {
 		history.push('/signin?redirect=shipping');
@@ -61,7 +61,7 @@ class CartScreen extends React.Component {
 												))}
 											</select>
 										</div>
-										<div>${item.price}</div>
+										<div>${item.price * item.qty}</div>
 										<div>
 											<button
 												type='button'
@@ -109,4 +109,6 @@ const mapStateToProps = (state) => {
 	};
 };
 
-export default connect(mapStateToProps, { addToCart })(CartScreen);
+export default connect(mapStateToProps, { addToCart, removeFromCart })(
+	CartScreen
+);

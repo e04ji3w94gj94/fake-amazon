@@ -6,4 +6,4 @@ export {
 	PRODUCT_DETAILS_SUCCESS,
 	PRODUCT_DETAILS_FAIL,
 } from './productConstants';
-export { CART_ADD_ITEM } from './cartConstants';
+export { CART_ADD_ITEM, CART_REMOVE_ITEM } from './cartConstants';
