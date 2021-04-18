@@ -28,6 +28,10 @@ class SigninScreen extends React.Component {
 	};
 
 	render() {
+		if (this.props.userSignin.userInfo) {
+			history.push(this.redirect);
+		}
+
 		const { loading, error } = this.props.userSignin;
 		return (
 			<div>

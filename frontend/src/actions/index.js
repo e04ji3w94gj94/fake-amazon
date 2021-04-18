@@ -1,3 +1,3 @@
 export { listProducts, detailsProduct } from './productActions';
-export { addToCart, removeFromCart } from './cartActions';
+export { addToCart, removeFromCart, saveShippingAddress } from './cartActions';
 export { register, signin, signout } from './userActions';
