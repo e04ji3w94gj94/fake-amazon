@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { signin } from '../actions';
+import { register } from '../actions';
 import LoadingBox from '../components/LoadingBox';
 import MessageBox from '../components/MessageBox';
 import history from '../history';
@@ -12,31 +12,51 @@ class SigninScreen extends React.Component {
 		: '/';
 
 	state = {
+		name: '',
 		email: '',
 		password: '',
+		confirmPassword: '',
 	};
 
 	componentDidUpdate() {
-		if (this.props.userSignin.userInfo) {
+		if (this.props.userRegister.userInfo) {
 			history.push(this.redirect);
 		}
 	}
 
 	submitHandler = (e) => {
 		e.preventDefault();
-		this.props.signin(this.state.email, this.state.password);
+		if (this.state.password !== this.state.confirmPassword) {
+			alert('Password and confirm password are not match');
+		} else {
+			this.props.register(
+				this.state.name,
+				this.state.email,
+				this.state.password
+			);
+		}
 	};
 
 	render() {
-		const { loading, error } = this.props.userSignin;
+		const { loading, error } = this.props.userRegister;
 		return (
 			<div>
 				<form className='form' onSubmit={this.submitHandler}>
 					<div>
-						<h1>Sign In</h1>
+						<h1>Create Account</h1>
 					</div>
 					{loading && <LoadingBox></LoadingBox>}
 					{error && <MessageBox variant='danger'>{error}</MessageBox>}
+					<div>
+						<label htmlFor='name'>Name</label>
+						<input
+							type='text'
+							id='name'
+							placeholder='Enter name'
+							required
+							onChange={(e) => this.setState({ name: e.target.value })}
+						></input>
+					</div>
 					<div>
 						<label htmlFor='email'>Email address</label>
 						<input
@@ -58,18 +78,28 @@ class SigninScreen extends React.Component {
 						></input>
 					</div>
 					<div>
+						<label htmlFor='confirmPassword'>Confirm Password</label>
+						<input
+							type='password'
+							id='confirmPassword'
+							placeholder='Enter confirm password'
+							required
+							onChange={(e) =>
+								this.setState({ confirmPassword: e.target.value })
+							}
+						></input>
+					</div>
+					<div>
 						<label />
 						<button className='primary' type='submit'>
-							Sign In
+							Register
 						</button>
 					</div>
 					<div>
 						<label />
 						<div>
-							New customer?{' '}
-							<Link to={`/register?redirect=${this.redirect}`}>
-								Create your account
-							</Link>
+							Already have an account?{' '}
+							<Link to={`/signin?redirect=${this.redirect}`}>Sign-In</Link>
 						</div>
 					</div>
 				</form>
@@ -80,8 +110,8 @@ class SigninScreen extends React.Component {
 
 const mapStateToProps = (state) => {
 	return {
-		userSignin: state.userSignin,
+		userRegister: state.userRegister,
 	};
 };
 
-export default connect(mapStateToProps, { signin })(SigninScreen);
+export default connect(mapStateToProps, { register })(SigninScreen);
