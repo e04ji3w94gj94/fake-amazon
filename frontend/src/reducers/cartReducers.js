@@ -7,6 +7,7 @@ const initialState = {
 	shippingAddress: localStorage.getItem('shippingAddress')
 		? JSON.parse(localStorage.getItem('shippingAddress'))
 		: {},
+	paymentMethod: 'PayPal',
 };
 
 export const cartReducer = (state = initialState, action) => {
@@ -31,6 +32,8 @@ export const cartReducer = (state = initialState, action) => {
 			};
 		case types.CART_SAVE_SHIPPING_ADDRESS:
 			return { ...state, shippingAddress: action.payload };
+		case types.CART_SAVE_PAYMENT_METHOD:
+			return { ...state, paymentMethod: action.payload };
 		default:
 			return state;
 	}
