@@ -6,3 +6,4 @@ export {
 	savePaymentMethod,
 } from './cartActions';
 export { register, signin, signout } from './userActions';
+export { createOrder, resetOrder } from './orderActions';
