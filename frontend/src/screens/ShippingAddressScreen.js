@@ -5,15 +5,29 @@ import CheckoutSteps from '../components/CheckoutSteps';
 import history from '../history';
 
 class ShippingAddressScreen extends React.Component {
-	shippingAddress = this.props.cart.shippingAddress;
+	redirect = this.props.location.search
+		? this.props.location.search.split('=')[1]
+		: '/';
 
 	state = {
-		fullName: this.shippingAddress.fullName,
-		address: this.shippingAddress.address,
-		city: this.shippingAddress.city,
-		postalCode: this.shippingAddress.postalCode,
-		country: this.shippingAddress.country,
+		fullName: '',
+		address: '',
+		city: '',
+		postalCode: '',
+		country: '',
 	};
+
+	componentDidMount() {
+		if (!this.props.userSignin.userInfo) {
+			history.push('/signin');
+		}
+	}
+
+	componentDidUpdate() {
+		if (!this.props.userSignin.userInfo) {
+			history.push('/signin?redirect=shipping');
+		}
+	}
 
 	submitHandler = (e) => {
 		e.preventDefault();
@@ -28,10 +42,6 @@ class ShippingAddressScreen extends React.Component {
 	};
 
 	render() {
-		if (!this.props.userSignin.userInfo) {
-			history.push('/signin');
-		}
-
 		return (
 			<div>
 				<CheckoutSteps step1 step2></CheckoutSteps>
