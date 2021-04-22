@@ -31,3 +31,22 @@ export const resetOrder = () => {
 		type: types.ORDER_CREATE_RESET,
 	};
 };
+
+export const detailsOrder = (orderId) => async (dispatch, getState) => {
+	dispatch({ type: types.ORDER_DETAILS_REQUEST, payload: orderId });
+	const {
+		userSignin: { userInfo },
+	} = getState();
+	try {
+		const { data } = await axios.get(`/api/orders/${orderId}`, {
+			headers: { Authorization: `Bearer ${userInfo.token}` },
+		});
+		dispatch({ type: types.ORDER_DETAILS_SUCCESS, payload: data });
+	} catch (error) {
+		const message =
+			error.response && error.response.data.message
+				? error.response.data.message
+				: error.message;
+		dispatch({ type: types.ORDER_DETAILS_FAIL, payload: message });
+	}
+};
