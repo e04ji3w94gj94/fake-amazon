@@ -5,16 +5,18 @@ import CheckoutSteps from '../components/CheckoutSteps';
 import history from '../history';
 
 class ShippingAddressScreen extends React.Component {
+	shippingAddress = this.props.cart.shippingAddress;
+
 	redirect = this.props.location.search
 		? this.props.location.search.split('=')[1]
 		: '/';
 
 	state = {
-		fullName: '',
-		address: '',
-		city: '',
-		postalCode: '',
-		country: '',
+		fullName: this.shippingAddress.fullName,
+		address: this.shippingAddress.address,
+		city: this.shippingAddress.city,
+		postalCode: this.shippingAddress.postalCode,
+		country: this.shippingAddress.country,
 	};
 
 	componentDidMount() {

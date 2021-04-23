@@ -1,18 +1,65 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
+import axios from 'axios';
+import { PayPalButton } from 'react-paypal-button-v2';
 import LoadingBox from '../components/LoadingBox';
 import MessageBox from '../components/MessageBox';
-import { detailsOrder } from '../actions';
+import { detailsOrder, payOrder, resetPayOrder } from '../actions';
 
 class OrderScreen extends React.Component {
+	state = {
+		sdkReady: false,
+	};
+
 	componentDidMount() {
 		const orderId = this.props.match.params.id;
-		this.props.detailsOrder(orderId);
+		const { order } = this.props.orderDetails;
+		console.log('componentDidMount:', order);
+		if (!order || (order && order._id !== orderId)) {
+			this.props.detailsOrder(orderId);
+			if (!window.paypal) {
+				this.addPayPalScript();
+			} else {
+				this.setState({ sdkReady: true });
+			}
+		}
 	}
+
+	componentDidUpdate() {
+		const orderId = this.props.match.params.id;
+		const { order } = this.props.orderDetails;
+		console.log('componentDidUpdate:', order);
+
+		const { success: successPay } = this.props.orderPay;
+
+		if (successPay) {
+			this.props.resetPayOrder();
+			this.props.detailsOrder(orderId);
+		}
+	}
+
+	addPayPalScript = async () => {
+		const { data } = await axios.get('/api/config/paypal');
+		const script = document.createElement('script');
+		script.type = 'text/javascript';
+		script.src = `https://www.paypal.com/sdk/js?client-id=${data}`;
+		script.async = true;
+		script.onload = () => {
+			this.setState({ sdkReady: true });
+		};
+		document.body.appendChild(script);
+	};
+
+	successPaymentHandler = (paymentResult) => {
+		const { order } = this.props.orderDetails;
+		this.props.payOrder(order, paymentResult);
+	};
 
 	render() {
 		const { order, loading, error } = this.props.orderDetails;
+		const { loading: loadingPay, error: errorPay } = this.props.orderPay;
+
 		return loading ? (
 			<LoadingBox></LoadingBox>
 		) : error ? (
@@ -124,6 +171,25 @@ class OrderScreen extends React.Component {
 										</div>
 									</div>
 								</li>
+								{!order.isPaid && (
+									<li>
+										{!this.state.sdkReady ? (
+											<LoadingBox></LoadingBox>
+										) : (
+											<>
+												{errorPay && (
+													<MessageBox variant='danger'>{errorPay}</MessageBox>
+												)}
+												{loadingPay && <LoadingBox></LoadingBox>}
+
+												<PayPalButton
+													amount={order.totalPrice}
+													onSuccess={this.successPaymentHandler}
+												></PayPalButton>
+											</>
+										)}
+									</li>
+								)}
 							</ul>
 						</div>
 					</div>
@@ -136,7 +202,12 @@ class OrderScreen extends React.Component {
 const mapStateToProps = (state) => {
 	return {
 		orderDetails: state.orderDetails,
+		orderPay: state.orderPay,
 	};
 };
 
-export default connect(mapStateToProps, { detailsOrder })(OrderScreen);
+export default connect(mapStateToProps, {
+	detailsOrder,
+	payOrder,
+	resetPayOrder,
+})(OrderScreen);

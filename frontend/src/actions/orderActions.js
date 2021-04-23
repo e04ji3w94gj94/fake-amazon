@@ -50,3 +50,38 @@ export const detailsOrder = (orderId) => async (dispatch, getState) => {
 		dispatch({ type: types.ORDER_DETAILS_FAIL, payload: message });
 	}
 };
+
+export const payOrder = (order, paymentResult) => async (
+	dispatch,
+	getState
+) => {
+	dispatch({
+		type: types.ORDER_PAY_REQUEST,
+		payload: { order, paymentResult },
+	});
+	const {
+		userSignin: { userInfo },
+	} = getState();
+	try {
+		const { data } = await axios.put(
+			`/api/orders/${order._id}/pay`,
+			paymentResult,
+			{
+				headers: { Authorization: `Bearer ${userInfo.token}` },
+			}
+		);
+		dispatch({ type: types.ORDER_PAY_SUCCESS, payload: data });
+	} catch (error) {
+		const message =
+			error.response && error.response.data.message
+				? error.response.data.message
+				: error.message;
+		dispatch({ type: types.ORDER_PAY_FAIL, payload: message });
+	}
+};
+
+export const resetPayOrder = () => {
+	return {
+		type: types.ORDER_PAY_RESET,
+	};
+};
