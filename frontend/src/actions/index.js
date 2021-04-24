@@ -12,4 +12,5 @@ export {
 	detailsOrder,
 	payOrder,
 	resetPayOrder,
+	listOrderMine,
 } from './orderActions';

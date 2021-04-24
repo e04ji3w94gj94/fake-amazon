@@ -11,6 +11,7 @@ import ShippingAddressScreen from './screens/ShippingAddressScreen';
 import PaymentMethodScreen from './screens/PaymentMethodScreen';
 import PlaceOrderScreen from './screens/PlaceOrderScreen';
 import OrderScreen from './screens/OrderScreen';
+import OrderHistoryScreen from './screens/OrderHistoryScreen';
 import { signout } from './actions/userActions';
 
 class App extends React.Component {
@@ -44,6 +45,9 @@ class App extends React.Component {
 									</Link>
 									<ul className='dropdown-content'>
 										<li>
+											<Link to='/orderhistory'>Order History</Link>
+										</li>
+										<li>
 											<Link to='#signout' onClick={this.signoutHandler}>
 												Sign Out
 											</Link>
@@ -64,6 +68,7 @@ class App extends React.Component {
 						<Route path='/payment' component={PaymentMethodScreen}></Route>
 						<Route path='/placeorder' component={PlaceOrderScreen}></Route>
 						<Route path='/order/:id' component={OrderScreen}></Route>
+						<Route path='/orderhistory' component={OrderHistoryScreen}></Route>
 						<Route path='/' component={HomeScreen} exact></Route>
 					</main>
 					<footer className='row center'>All right reserved</footer>

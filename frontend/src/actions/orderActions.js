@@ -85,3 +85,24 @@ export const resetPayOrder = () => {
 		type: types.ORDER_PAY_RESET,
 	};
 };
+
+export const listOrderMine = () => async (dispatch, getState) => {
+	dispatch({ type: types.ORDER_MINE_LIST_REQUEST });
+	const {
+		userSignin: { userInfo },
+	} = getState();
+	try {
+		const { data } = await axios.get('/api/orders/mine', {
+			headers: {
+				Authorization: `Bearer ${userInfo.token}`,
+			},
+		});
+		dispatch({ type: types.ORDER_MINE_LIST_SUCCESS, payload: data });
+	} catch (error) {
+		const message =
+			error.response && error.response.data.message
+				? error.response.data.message
+				: error.message;
+		dispatch({ type: types.ORDER_MINE_LIST_FAIL, payload: message });
+	}
+};
