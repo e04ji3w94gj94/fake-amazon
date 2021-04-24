@@ -15,7 +15,7 @@ class OrderScreen extends React.Component {
 	componentDidMount() {
 		const orderId = this.props.match.params.id;
 		const { order } = this.props.orderDetails;
-		console.log('componentDidMount:', order);
+
 		if (!order || (order && order._id !== orderId)) {
 			this.props.detailsOrder(orderId);
 			if (!window.paypal) {
@@ -29,7 +29,6 @@ class OrderScreen extends React.Component {
 	componentDidUpdate() {
 		const orderId = this.props.match.params.id;
 		const { order } = this.props.orderDetails;
-		console.log('componentDidUpdate:', order);
 
 		const { success: successPay } = this.props.orderPay;
 

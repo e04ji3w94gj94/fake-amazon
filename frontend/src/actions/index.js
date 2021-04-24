@@ -5,7 +5,14 @@ export {
 	saveShippingAddress,
 	savePaymentMethod,
 } from './cartActions';
-export { register, signin, signout } from './userActions';
+export {
+	register,
+	signin,
+	signout,
+	detailsUser,
+	updateUserProfile,
+	resetUserProfile,
+} from './userActions';
 export {
 	createOrder,
 	resetOrder,

@@ -12,6 +12,8 @@ import PaymentMethodScreen from './screens/PaymentMethodScreen';
 import PlaceOrderScreen from './screens/PlaceOrderScreen';
 import OrderScreen from './screens/OrderScreen';
 import OrderHistoryScreen from './screens/OrderHistoryScreen';
+import ProfileScreen from './screens/ProfileScreen';
+import PrivateRoute from './components/PrivateRoute';
 import { signout } from './actions/userActions';
 
 class App extends React.Component {
@@ -45,6 +47,9 @@ class App extends React.Component {
 									</Link>
 									<ul className='dropdown-content'>
 										<li>
+											<Link to='/profile'>User Profile</Link>
+										</li>
+										<li>
 											<Link to='/orderhistory'>Order History</Link>
 										</li>
 										<li>
@@ -69,6 +74,10 @@ class App extends React.Component {
 						<Route path='/placeorder' component={PlaceOrderScreen}></Route>
 						<Route path='/order/:id' component={OrderScreen}></Route>
 						<Route path='/orderhistory' component={OrderHistoryScreen}></Route>
+						<PrivateRoute
+							path='/profile'
+							component={ProfileScreen}
+						></PrivateRoute>
 						<Route path='/' component={HomeScreen} exact></Route>
 					</main>
 					<footer className='row center'>All right reserved</footer>
